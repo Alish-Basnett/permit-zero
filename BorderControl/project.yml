@@ -20,6 +20,10 @@ targets:
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         CFBundleDisplayName: Border Control
+        UIStatusBarStyle: UIStatusBarStyleLightContent
+        # No custom encryption → declare exempt so App Store Connect stops
+        # asking the export-compliance question on every upload.
+        ITSAppUsesNonExemptEncryption: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.yourname.bordercontrol

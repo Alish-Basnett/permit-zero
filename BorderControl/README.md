@@ -58,6 +58,52 @@ Then select an iPhone simulator and hit Run (⌘R).
   `RuleEngine.evaluate`, generation logic in `ApplicantGenerator`, and a card
   in `DocumentCardView`.
 
+## Shipping to TestFlight
+
+Building/signing/uploading requires **macOS + Xcode** — do this from a Mac.
+The steps below are ordered so nothing blocks the first upload. Items marked
+**(portal)** happen in a browser, separately from the Xcode project.
+
+**Before the first archive:**
+
+1. **(portal)** Register the **App ID / bundle identifier** in the Apple
+   Developer portal (Certificates, Identifiers & Profiles → Identifiers).
+2. **(portal)** Create the **App Store Connect app record** (My Apps → +):
+   name, bundle ID, SKU. Both #1 and #2 are separate from Xcode and each
+   block upload if missing.
+3. **(portal)** Create an **App Store Connect API key** (Users and Access →
+   Integrations → Keys, **App Manager** role). Authenticate uploads with this
+   key instead of Apple ID + password — it skips 2FA and makes uploads fully
+   scriptable (`xcrun altool`/`notarytool`, `xcodebuild -exportArchive`, or
+   Fastlane can all use it).
+4. In `project.yml`, set `PRODUCT_BUNDLE_IDENTIFIER` (and `bundleIdPrefix`) to
+   match the bundle ID from #1, then re-run `xcodegen generate`.
+5. Open the project, enable **"Automatically manage signing"** and pick your
+   team. Manual certs/profiles are the #1 first-time time-sink — avoid unless
+   you have a specific reason.
+6. Add a real **1024×1024 app icon** — an empty `AppIcon` slot is rejected at
+   upload, not at review.
+
+**Already handled in this repo:**
+
+- `ITSAppUsesNonExemptEncryption = false` is set (in `project.yml` properties
+  and `Info.plist`) — skips the export-compliance prompt on every upload. If
+  you ever add custom encryption, revisit this.
+- No camera/location/mic/etc. are used, so **no `NSUsageDescription` strings
+  are needed**. If you add any such API, its usage-description string is
+  mandatory or the binary is rejected at validation — add it to `project.yml`
+  properties (not just `Info.plist`, which XcodeGen overwrites on generate).
+
+**Each upload:**
+
+- **Bump the build number** (`CURRENT_PROJECT_VERSION`) every time — it must
+  strictly increase; you can't reuse one even after a failed upload.
+- Archive (Product → Archive), then upload via the Organizer.
+- Processing takes **~5–15 min** before the build is selectable.
+- **Internal testing** (your own team, ≤100 people) is available immediately,
+  no review. **External** groups need a one-time Beta App Review (~24h) — use
+  internal for your own device today.
+
 ## Known gaps / good next steps
 
 - No persistence — progress resets when the app is killed.
