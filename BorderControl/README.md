@@ -81,8 +81,10 @@ The steps below are ordered so nothing blocks the first upload. Items marked
 5. Open the project, enable **"Automatically manage signing"** and pick your
    team. Manual certs/profiles are the #1 first-time time-sink — avoid unless
    you have a specific reason.
-6. Add a real **1024×1024 app icon** — an empty `AppIcon` slot is rejected at
-   upload, not at review.
+6. App icon is already included — a 1024×1024 icon ships in
+   `AppIcon.appiconset`, with its editable source at
+   `Resources/AppIcon.source.svg` (re-render with headless Chromium or any
+   SVG→PNG tool if you tweak it). Swap in your own artwork anytime.
 
 **Already handled in this repo:**
 
@@ -108,6 +110,7 @@ The steps below are ordered so nothing blocks the first upload. Items marked
 
 - No persistence — progress resets when the app is killed.
 - No sound/haptics on stamping.
-- App icon is an empty placeholder slot; add real artwork before shipping.
+- App icon is a generated placeholder (passport + approval stamp); swap in
+  final artwork when you have it.
 - Only 5 days of content; the real game's depth comes from many more days
   and document types, which this scaffold is structured to make easy to add.

@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <!-- bureaucratic slate background -->
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#33454a"/>
+      <stop offset="0.55" stop-color="#243237"/>
+      <stop offset="1" stop-color="#161f22"/>
+    </linearGradient>
+    <radialGradient id="vig" cx="0.5" cy="0.42" r="0.75">
+      <stop offset="0.55" stop-color="#000000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.45"/>
+    </radialGradient>
+
+    <!-- passport cover -->
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7d2529"/>
+      <stop offset="1" stop-color="#571619"/>
+    </linearGradient>
+
+    <!-- rough rubber-stamp ink edge -->
+    <filter id="rough" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="3" seed="7" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <!-- speckle to break up the ink -->
+    <filter id="speckle" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3" result="s"/>
+      <feColorMatrix in="s" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.1 0.85"/>
+      <feComposite operator="in" in2="SourceGraphic"/>
+    </filter>
+
+    <!-- soft drop shadow for the passport -->
+    <filter id="ds" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="18" stdDeviation="26" flood-color="#000000" flood-opacity="0.55"/>
+    </filter>
+  </defs>
+
+  <!-- canvas -->
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <rect width="1024" height="1024" fill="url(#vig)"/>
+
+  <!-- faint gridded ledger lines, very subtle -->
+  <g stroke="#ffffff" stroke-opacity="0.03" stroke-width="2">
+    <line x1="0" y1="256" x2="1024" y2="256"/>
+    <line x1="0" y1="512" x2="1024" y2="512"/>
+    <line x1="0" y1="768" x2="1024" y2="768"/>
+    <line x1="256" y1="0" x2="256" y2="1024"/>
+    <line x1="512" y1="0" x2="512" y2="1024"/>
+    <line x1="768" y1="0" x2="768" y2="1024"/>
+  </g>
+
+  <!-- PASSPORT, gently tilted -->
+  <g transform="rotate(-7 512 540)" filter="url(#ds)">
+    <rect x="286" y="272" width="452" height="560" rx="26" fill="url(#cover)"/>
+    <rect x="286" y="272" width="452" height="560" rx="26" fill="none" stroke="#3f0f11" stroke-width="4"/>
+
+    <!-- gold emblem: laurel ring + star -->
+    <g stroke="#d9b25b" stroke-width="7" fill="none" stroke-linecap="round">
+      <circle cx="512" cy="470" r="96"/>
+      <circle cx="512" cy="470" r="72" stroke-opacity="0.6"/>
+    </g>
+    <!-- five-point star -->
+    <path d="M512 402 L529 452 L582 452 L539 483 L555 534 L512 503 L469 534 L485 483 L442 452 L495 452 Z"
+          fill="#d9b25b"/>
+
+    <!-- title bars -->
+    <rect x="356" y="612" width="312" height="20" rx="10" fill="#d9b25b" fill-opacity="0.92"/>
+    <rect x="392" y="656" width="240" height="16" rx="8" fill="#d9b25b" fill-opacity="0.55"/>
+    <!-- machine-readable zone -->
+    <g fill="#e7d6a8" fill-opacity="0.5">
+      <rect x="330" y="736" width="364" height="12" rx="6"/>
+      <rect x="330" y="762" width="364" height="12" rx="6"/>
+    </g>
+  </g>
+
+  <!-- RED RUBBER STAMP, overlapping, angled the other way -->
+  <g transform="rotate(13 648 700)" filter="url(#rough)" opacity="0.92">
+    <g fill="none" stroke="#e5372a">
+      <circle cx="648" cy="700" r="152" stroke-width="18"/>
+      <circle cx="648" cy="700" r="120" stroke-width="7"/>
+    </g>
+    <!-- bold checkmark -->
+    <path d="M592 702 L636 748 L716 652" fill="none" stroke="#e5372a"
+          stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
